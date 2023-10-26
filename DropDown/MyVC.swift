@@ -9,8 +9,8 @@ import UIKit
 
 class MyVC: UIViewController {
     
-    var dropDownFrameView = UIView()
     var dropView = DropDown()
+    var dropDownFrameView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()

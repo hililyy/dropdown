@@ -1,5 +1,5 @@
 //
-//  DropDownTableView.swift
+//  DropDownTableVC.swift
 //  DropDown
 //
 //  Created by 강조은 on 2023/10/26.

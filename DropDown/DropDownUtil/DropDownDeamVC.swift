@@ -9,6 +9,7 @@ import UIKit
 
 class DropDownDeamVC: UIViewController {
     var parentFrame = CGRect()
+    
     init(frame: CGRect) {
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .overFullScreen
@@ -21,20 +22,22 @@ class DropDownDeamVC: UIViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        initalize()
+    }
+    
+    func initalize() {
         self.view.backgroundColor = .clear
         let tgr = UITapGestureRecognizer(target: self, action: #selector(tap))
         self.view.addGestureRecognizer(tgr)
-        let child = DropDownTableVC()
-        self.addChild(child)
-        self.view.addSubview(child.view)
         
-        child.didMove(toParent: self)
-        child.view.frame = parentFrame
-        child.view.frame.size.width = parentFrame.width
-        child.view.frame.size.height = 120
-        child.view.frame.origin.x = parentFrame.origin.x
-        child.view.frame.origin.y = parentFrame.origin.y + parentFrame.height
-        child.view.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin]
+        let tableView = DropDownTableView()
+        self.view.addSubview(tableView)
+        tableView.frame.size.width = parentFrame.width
+        tableView.frame.size.height = 120
+        tableView.frame.origin.x = parentFrame.origin.x
+        tableView.frame.origin.y = parentFrame.origin.y + parentFrame.height
     }
     
     @objc func tap() {
