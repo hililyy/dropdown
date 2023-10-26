@@ -9,7 +9,7 @@ import UIKit
 
 class DropDownDeamVC: UIViewController {
     var parentFrame = CGRect()
-    
+    let tableView = DropDownTableView()
     init(frame: CGRect) {
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .overFullScreen
@@ -32,16 +32,37 @@ class DropDownDeamVC: UIViewController {
         let tgr = UITapGestureRecognizer(target: self, action: #selector(tap))
         self.view.addGestureRecognizer(tgr)
         
-        let tableView = DropDownTableView()
+        
         self.view.addSubview(tableView)
         tableView.frame.size.width = parentFrame.width
-        tableView.frame.size.height = 120
+        tableView.frame.size.height = 0
         tableView.frame.origin.x = parentFrame.origin.x
         tableView.frame.origin.y = parentFrame.origin.y + parentFrame.height
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1,
+                           delay: 0,
+                           usingSpringWithDamping: 0.7,
+                           initialSpringVelocity: 0.7,
+                           options: .curveEaseOut) {
+                self.tableView.frame.size.height = 120
+                self.view.layoutIfNeeded()
+            }
+        }
     }
     
     @objc func tap() {
-        print("farewell")
-        self.dismiss(animated: true)
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1,
+                           delay: 0,
+                           usingSpringWithDamping: 0.7,
+                           initialSpringVelocity: 0.7,
+                           options: .curveEaseOut) {
+                self.tableView.frame.size.height = 0
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+                self.dismiss(animated: true)
+            }
+        }
     }
 }
