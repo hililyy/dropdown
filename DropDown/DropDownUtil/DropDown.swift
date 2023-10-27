@@ -7,24 +7,19 @@
 
 import UIKit
 
-class DropDown: UIView, DropViewProtocol {
-    func tmp(text: String?) {
-        self.rotetdArrowImage()
-        
-        if let text {
-            basicLabel.text = text
-        }
-    }
+class DropDown: UIView {
     
-    var parentVC: UIViewController? = nil
-    let dropView = UIView()
+    let basicView = UIView()
     let basicLabel = UILabel()
     let arrowImageView = UIImageView(image: UIImage(named: "icArrow"))
+    
     let contentBackGroundTableView = UIView()
-    var delegate: DropDeamVCProtocol? = nil
+    var delegate: DropDownDelegate?
+    var parentVC: UIViewController?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         initUI()
         setTabGesture()
         initSubviews()
@@ -37,18 +32,21 @@ class DropDown: UIView, DropViewProtocol {
     
     func initUI() {
         backgroundColor = .white
-        dropView.backgroundColor = UIColor(named: "gray1")
-        dropView.layer.cornerRadius = 5
+        basicView.backgroundColor = UIColor(named: "gray1")
+        basicView.layer.cornerRadius = 5
         basicLabel.text = "선택해주셩"
     }
     
-    @objc func handleTap(sender: UITapGestureRecognizer) {
-        let deamVC = DropDownDeamVC(frame: self.superview?.frame ?? CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+    @objc func openDropDeamView() {
+        rotetdArrowImage()
+        
+        guard let frame = superview?.frame else { return }
+        
+        let deamVC = DropDownDeamVC(frame: frame)
         deamVC.delegate = delegate
         deamVC.dropViewDelegate = self
-        parentVC?.present(deamVC, animated: false)
         
-        rotetdArrowImage()
+        parentVC?.present(deamVC, animated: false)
     }
     
     func rotetdArrowImage() {
@@ -61,50 +59,57 @@ class DropDown: UIView, DropViewProtocol {
             }
         }
     }
-
+    
     func setTabGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-        dropView.addGestureRecognizer(tapGesture)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openDropDeamView))
+        basicView.addGestureRecognizer(tapGesture)
     }
     
     func initSubviews() {
-        addSubview(dropView)
-        dropView.addSubview(basicLabel)
-        dropView.addSubview(arrowImageView)
+        addSubview(basicView)
+        basicView.addSubview(basicLabel)
+        basicView.addSubview(arrowImageView)
         addSubview(contentBackGroundTableView)
     }
-
+    
     func initConstraints() {
-        dropView.translatesAutoresizingMaskIntoConstraints = false
+        basicView.translatesAutoresizingMaskIntoConstraints = false
         basicLabel.translatesAutoresizingMaskIntoConstraints = false
         arrowImageView.translatesAutoresizingMaskIntoConstraints = false
         contentBackGroundTableView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
-            dropView.topAnchor.constraint(equalTo: topAnchor),
-            dropView.leftAnchor.constraint(equalTo: leftAnchor),
-            dropView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            dropView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            basicView.topAnchor.constraint(equalTo: topAnchor),
+            basicView.leftAnchor.constraint(equalTo: leftAnchor),
+            basicView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            basicView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            basicLabel.topAnchor.constraint(equalTo: dropView.topAnchor),
-            basicLabel.leadingAnchor.constraint(equalTo: dropView.leadingAnchor, constant: 10),
+            basicLabel.topAnchor.constraint(equalTo: basicView.topAnchor),
+            basicLabel.leadingAnchor.constraint(equalTo: basicView.leadingAnchor, constant: 10),
             basicLabel.trailingAnchor.constraint(equalTo: arrowImageView.trailingAnchor),
-            basicLabel.bottomAnchor.constraint(equalTo: dropView.bottomAnchor),
+            basicLabel.bottomAnchor.constraint(equalTo: basicView.bottomAnchor),
             
-            arrowImageView.topAnchor.constraint(equalTo: dropView.topAnchor, constant: 13),
-            arrowImageView.bottomAnchor.constraint(equalTo: dropView.bottomAnchor, constant: -13),
+            arrowImageView.topAnchor.constraint(equalTo: basicView.topAnchor, constant: 13),
+            arrowImageView.bottomAnchor.constraint(equalTo: basicView.bottomAnchor, constant: -13),
             arrowImageView.heightAnchor.constraint(equalTo: arrowImageView.widthAnchor, multiplier: 1.0),
-            arrowImageView.trailingAnchor.constraint(equalTo: dropView.trailingAnchor, constant: -15),
+            arrowImageView.trailingAnchor.constraint(equalTo: basicView.trailingAnchor, constant: -15),
             
-            contentBackGroundTableView.topAnchor.constraint(equalTo: dropView.bottomAnchor),
-            contentBackGroundTableView.leadingAnchor.constraint(equalTo: dropView.leadingAnchor),
-            contentBackGroundTableView.trailingAnchor.constraint(equalTo: dropView.trailingAnchor),
-            contentBackGroundTableView.bottomAnchor.constraint(equalTo: dropView.bottomAnchor, constant: 100)
+            contentBackGroundTableView.topAnchor.constraint(equalTo: basicView.bottomAnchor),
+            contentBackGroundTableView.leadingAnchor.constraint(equalTo: basicView.leadingAnchor),
+            contentBackGroundTableView.trailingAnchor.constraint(equalTo: basicView.trailingAnchor),
+            contentBackGroundTableView.bottomAnchor.constraint(equalTo: basicView.bottomAnchor, constant: 100)
         ])
     }
 }
 
-
-protocol DropViewProtocol {
-    func tmp(text: String?)
+extension DropDown: DropViewProtocol{
+    func rotateImage() {
+        rotetdArrowImage()
+    }
+    
+    func changeBasicLabel(text: String?) {
+        if let text {
+            basicLabel.text = text
+        }
+    }
 }

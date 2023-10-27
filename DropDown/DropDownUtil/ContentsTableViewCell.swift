@@ -23,7 +23,7 @@ class ContentsTableViewCell: UITableViewCell {
     
     func initUI() {
         title.textColor = .black
-        contentView.backgroundColor = .clear
+        backgroundColor = .clear
         selectionStyle = .none
         backgroundColor = .clear
     }
@@ -36,23 +36,10 @@ class ContentsTableViewCell: UITableViewCell {
         title.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            title.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            title.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            title.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            title.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
+            title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            title.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ])
     }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-            super.setSelected(selected, animated: animated)
-            if selected{
-                UIView.animate(withDuration: 0.2, animations: {
-                    self.transform = CGAffineTransform(scaleX: 0.97, y: 0.97)
-                }, completion: { finished in
-                    UIView.animate(withDuration: 0.2) {
-                        self.transform = .identity
-                    }
-                })
-            }
-        }
 }

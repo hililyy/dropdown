@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyVC: UIViewController, DropDeamVCProtocol {
+class MyVC: UIViewController {
     var dropView = DropDown()
     var dropDownFrameView = UIView()
     
@@ -43,8 +43,11 @@ class MyVC: UIViewController, DropDeamVCProtocol {
         ])
     }
     
+    
+}
+
+extension MyVC: DropDownDelegate {
     func select(index: Int) {
         print("select \(index)")
     }
 }
-

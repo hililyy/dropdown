@@ -10,7 +10,7 @@ import UIKit
 class DropDownTableView: UIView {
     let datalist = ["1번","2번","3번","4번","5번","6번","7번","8번","9번","10번"]
     
-    var contentsTableView: UITableView = {
+    var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(ContentsTableViewCell.self, forCellReuseIdentifier: "ContentsTableViewCell")
         tableView.showsVerticalScrollIndicator = false
@@ -20,7 +20,6 @@ class DropDownTableView: UIView {
         tableView.backgroundColor = .white
         tableView.layer.cornerRadius = 5
         
-
         return tableView
     }()
     
@@ -37,18 +36,18 @@ class DropDownTableView: UIView {
     var tableViewTap: (Int, String) -> Void = { _, _ in }
     
     func initTable() {
-        contentsTableView.dataSource = self
-        contentsTableView.delegate = self
+        tableView.dataSource = self
+        tableView.delegate = self
         
-        addSubview(contentsTableView)
+        addSubview(tableView)
         
-        contentsTableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            contentsTableView.topAnchor.constraint(equalTo: topAnchor),
-            contentsTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            contentsTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentsTableView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }
@@ -59,7 +58,7 @@ extension DropDownTableView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = contentsTableView.dequeueReusableCell(withIdentifier: "ContentsTableViewCell", for: indexPath) as? ContentsTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ContentsTableViewCell", for: indexPath) as? ContentsTableViewCell else { return UITableViewCell() }
         cell.title.text = datalist[indexPath.row]
         
         return cell
@@ -73,5 +72,4 @@ extension DropDownTableView: UITableViewDelegate, UITableViewDataSource {
         tableViewTap(indexPath.row, datalist[indexPath.row])
         print(indexPath.row)
     }
-
 }
