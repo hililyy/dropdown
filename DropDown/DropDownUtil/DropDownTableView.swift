@@ -8,11 +8,19 @@
 import UIKit
 
 class DropDownTableView: UIView {
-    let datalist = ["1번","2번","3번","4번","5번","1번","2번","3번","4번","5번"]
+    let datalist = ["1번","2번","3번","4번","5번","6번","7번","8번","9번","10번"]
     
     var contentsTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(ContentsTableViewCell.self, forCellReuseIdentifier: "ContentsTableViewCell")
+        tableView.showsVerticalScrollIndicator = false
+        tableView.separatorColor = .clear
+        tableView.separatorStyle = .none
+        tableView.bounces = false
+        tableView.backgroundColor = .white
+        tableView.layer.cornerRadius = 5
+        
+
         return tableView
     }()
     
@@ -25,6 +33,8 @@ class DropDownTableView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    var tableViewTap: (Int, String) -> Void = { _, _ in }
     
     func initTable() {
         contentsTableView.dataSource = self
@@ -58,4 +68,10 @@ extension DropDownTableView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableViewTap(indexPath.row, datalist[indexPath.row])
+        print(indexPath.row)
+    }
+
 }

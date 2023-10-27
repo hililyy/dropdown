@@ -7,13 +7,22 @@
 
 import UIKit
 
-class DropDown: UIView {
+class DropDown: UIView, DropViewProtocol {
+    func tmp(text: String?) {
+        self.rotetdArrowImage()
+        
+        if let text {
+            basicLabel.text = text
+        }
+    }
+    
+    var parentVC: UIViewController? = nil
     let dropView = UIView()
     let basicLabel = UILabel()
     let arrowImageView = UIImageView(image: UIImage(named: "icArrow"))
     let contentBackGroundTableView = UIView()
-    var handler: () -> () = {}
-
+    var delegate: DropDeamVCProtocol? = nil
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         initUI()
@@ -29,12 +38,28 @@ class DropDown: UIView {
     func initUI() {
         backgroundColor = .white
         dropView.backgroundColor = UIColor(named: "gray1")
-        dropView.layer.cornerRadius = 10
+        dropView.layer.cornerRadius = 5
         basicLabel.text = "선택해주셩"
     }
     
     @objc func handleTap(sender: UITapGestureRecognizer) {
-        handler()
+        let deamVC = DropDownDeamVC(frame: self.superview?.frame ?? CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+        deamVC.delegate = delegate
+        deamVC.dropViewDelegate = self
+        parentVC?.present(deamVC, animated: false)
+        
+        rotetdArrowImage()
+    }
+    
+    func rotetdArrowImage() {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.35,
+                           delay: 0,
+                           options: .curveEaseOut) {
+                self.arrowImageView.transform = self.arrowImageView.transform.rotated(by: .pi)
+                self.layoutIfNeeded()
+            }
+        }
     }
 
     func setTabGesture() {
@@ -77,4 +102,9 @@ class DropDown: UIView {
             contentBackGroundTableView.bottomAnchor.constraint(equalTo: dropView.bottomAnchor, constant: 100)
         ])
     }
+}
+
+
+protocol DropViewProtocol {
+    func tmp(text: String?)
 }

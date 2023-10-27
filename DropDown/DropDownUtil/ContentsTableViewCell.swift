@@ -23,7 +23,9 @@ class ContentsTableViewCell: UITableViewCell {
     
     func initUI() {
         title.textColor = .black
-        contentView.backgroundColor = .yellow
+        contentView.backgroundColor = .clear
+        selectionStyle = .none
+        backgroundColor = .clear
     }
     
     func initSubviews() {
@@ -40,4 +42,17 @@ class ContentsTableViewCell: UITableViewCell {
             title.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
         ])
     }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+            super.setSelected(selected, animated: animated)
+            if selected{
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.transform = CGAffineTransform(scaleX: 0.97, y: 0.97)
+                }, completion: { finished in
+                    UIView.animate(withDuration: 0.2) {
+                        self.transform = .identity
+                    }
+                })
+            }
+        }
 }

@@ -7,8 +7,7 @@
 
 import UIKit
 
-class MyVC: UIViewController {
-    
+class MyVC: UIViewController, DropDeamVCProtocol {
     var dropView = DropDown()
     var dropDownFrameView = UIView()
     
@@ -16,7 +15,8 @@ class MyVC: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        
+        dropView.delegate = self
+        dropView.parentVC = self
         addSubView()
         initConstraints()
     }
@@ -41,10 +41,10 @@ class MyVC: UIViewController {
             dropView.trailingAnchor.constraint(equalTo: dropDownFrameView.trailingAnchor),
             dropView.bottomAnchor.constraint(equalTo: dropDownFrameView.bottomAnchor)
         ])
-        
-        dropView.handler = {
-            print("frame: \(self.dropDownFrameView.frame)")
-            self.present(DropDownDeamVC(frame: self.dropDownFrameView.frame), animated: true)
-        }
+    }
+    
+    func select(index: Int) {
+        print("select \(index)")
     }
 }
+
